@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bomb</title>
+</head>
+
+<style>
+    body{
+        text-align: center;
+        background: #EC0033;
+        font-family: sans-serif;
+        font-weight: 100;
+    }
+
+    h1{
+        color: #ffffff;
+        font-weight: 100;
+        font-size: 40px;
+        margin: 40px 0px 20px;
+    }
+
+    #clockdiv{
+        font-family: sans-serif;
+        color: #fff;
+        display: inline-block;
+        font-weight: 100;
+        text-align: center;
+        font-size: 30px;
+    }
+
+    #clockdiv > div{
+        padding: 10px;
+        border-radius: 3px;
+        background: #BF0029;
+        display: inline-block;
+    }
+
+    #clockdiv div > span{
+        padding: 15px;
+        border-radius: 3px;
+        background:#FF7E95;
+        display: inline-block;
+    }
+
+    .smalltext{
+        padding-top: 5px;
+        font-size: 16px;
+    }
+
+    input[type=text] {
+        border: 2px solid red;
+        border-radius: 4px;
+    }
+
+    .button {
+        display: inline-block;
+        border-radius: 4px;
+        background-color: #BF0029;
+        border: none;
+        color: #FFFFFF;
+        text-align: center;
+        font-size: 28px;
+        padding: 20px;
+        width: 200px;
+        transition: all 0.5s;
+        cursor: pointer;
+        margin: 5px;
+    }
+
+    .button span {
+        cursor: pointer;
+        display: inline-block;
+        position: relative;
+        transition: 0.5s;
+    }
+
+    .button span:after {
+        content: '\00bb';
+        position: absolute;
+        opacity: 0;
+        top: 0;
+        right: -20px;
+        transition: 0.5s;
+    }
+
+    .button:hover span {
+        padding-right: 25px;
+    }
+
+    .button:hover span:after {
+        opacity: 1;
+        right: 0;
+    }
+</style>
+
+
+<body>
+<h1>Bom Timer</h1>
+<div id="clockdiv">
+    <div>
+        <span class="minutes"></span>
+        <div class="smalltext">Minuten</div>
+    </div>
+    <div>
+        <span class="seconds"></span>
+        <div class="smalltext">Seconden</div>
+    </div>
+<!--    <div>-->
+<!--        <span class="milliseconds"></span>-->
+<!--        <div class="smalltext">Milliseconden</div>-->
+<!--    </div>-->
+</div><br><br>
+<button class="button" style="vertical-align:middle" onclick="stopBomb()"><span>Test code </span></button>
+</body>
+
+<script>
+
+    function getTimeRemaining(endtime) {
+        const total = Date.parse(endtime) - Date.parse(new Date());
+        const milliseconds = Math.floor(Math.random() * 100)
+        // const milliseconds = Math.floor(total % 10)
+        const seconds = Math.floor((total / 1000) % 60);
+        const minutes = Math.floor((total / 1000 / 60) % 60);
+        const hours = Math.floor((total / (1000 * 60 * 60)) % 24);
+        const days = Math.floor(total / (1000 * 60 * 60 * 24));
+
+        return {
+            total,
+            days,
+            hours,
+            minutes,
+            seconds,
+            milliseconds
+        };
+    }
+
+    function initializeClock(id, endtime) {
+        const clock = document.getElementById(id);
+        // const daysSpan = clock.querySelector('.days');
+        // const hoursSpan = clock.querySelector('.hours');
+        const minutesSpan = clock.querySelector('.minutes');
+        const secondsSpan = clock.querySelector('.seconds');
+        // const millisecondsSpan = clock.querySelector('.milliseconds');
+
+        function updateClock() {
+            const t = getTimeRemaining(endtime);
+
+            // daysSpan.innerHTML = t.days;
+            // hoursSpan.innerHTML = ('0' + t.hours).slice(-2);
+            minutesSpan.innerHTML = ('0' + t.minutes).slice(-2);
+            secondsSpan.innerHTML = ('0' + t.seconds).slice(-2);
+            // millisecondsSpan.innerHTML = ('0' + t.milliseconds).slice(-2);
+
+            if (t.total <= 0) {
+                clearInterval(timeinterval);
+            }
+        }
+
+        updateClock();
+        const timeinterval = setInterval(updateClock, 1000); // Change to 1 to add milliseconds
+    }
+
+    function stopBomb(){
+        window.location = "succes.html"
+    }
+
+    const deadline = new Date(Date.parse(new Date()) + 15 * 24 * 60 * 60 * 1000);
+    initializeClock('clockdiv', deadline);
+</script>
+
+
+</html>
